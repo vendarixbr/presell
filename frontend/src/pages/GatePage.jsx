@@ -64,6 +64,34 @@ function useCountUp(targetStr, duration = 1600) {
 
 // ─── constants ────────────────────────────────────────────────────────────────
 
+const LOADING_STEPS = [
+    { pct: 0,   text: "Verificando seu CPF na base de dados nacional..." },
+    { pct: 18,  text: "Cruzando dados com marketplaces e lojas virtuais..." },
+    { pct: 34,  text: "Consultando histórico de transferências PIX..." },
+    { pct: 50,  text: "Verificando registros de pagamentos digitais..." },
+    { pct: 65,  text: "Analisando histórico de compras online..." },
+    { pct: 78,  text: "Calculando correção monetária e juros..." },
+    { pct: 90,  text: "Consolidando reembolsos identificados..." },
+    { pct: 100, text: "Análise concluída!" },
+];
+
+const CATEGORIES = [
+    { icon: "🛒", label: "COMPRAS & VENDAS ONLINE",       tags: ["Marketplaces", "Lojas Virtuais", "E-commerce", "Sites de Oferta", "Anúncios Online"] },
+    { icon: "💎", label: "PRODUTOS & SERVIÇOS DIGITAIS",  tags: ["Cursos Online", "Mentorias", "Assinaturas", "Apps Digitais", "Plataformas"] },
+    { icon: "🇧🇷", label: "PAGAMENTOS & TRANSFERÊNCIAS",  tags: ["Gateways", "Carteiras Digitais", "Transferências Pix", "Investimentos", "Apostas Online"] },
+];
+
+const TAG_THRESHOLDS = {
+    "Marketplaces": 5,    "Lojas Virtuais": 11,   "E-commerce": 17,
+    "Sites de Oferta": 23, "Anúncios Online": 29,
+    "Cursos Online": 36,  "Mentorias": 42,         "Assinaturas": 48,
+    "Apps Digitais": 54,  "Plataformas": 60,
+    "Gateways": 67,       "Carteiras Digitais": 73, "Transferências Pix": 79,
+    "Investimentos": 85,  "Apostas Online": 91,
+};
+
+const GATE_LOADING_DURATION = 11000;
+
 const SCAM_TYPES = [
     "Golpe no PIX", "Fraude em Marketplace", "Compra não entregue",
     "Site falso / Phishing", "Golpe de Investimento", "Golpe no WhatsApp",
@@ -260,6 +288,108 @@ function FormStage({ onSubmit }) {
     );
 }
 
+// ─── loading stage ────────────────────────────────────────────────────────────
+
+function LoadingStage({ onComplete }) {
+    const [progress, setProgress] = useState(0);
+    const startRef = useRef(Date.now());
+    const rafRef   = useRef(null);
+
+    const tick = useCallback(() => {
+        const elapsed = Date.now() - startRef.current;
+        const pct = Math.min((elapsed / GATE_LOADING_DURATION) * 100, 100);
+        setProgress(pct);
+        if (pct < 100) {
+            rafRef.current = requestAnimationFrame(tick);
+        } else {
+            setTimeout(onComplete, 600);
+        }
+    }, [onComplete]);
+
+    useEffect(() => {
+        rafRef.current = requestAnimationFrame(tick);
+        return () => cancelAnimationFrame(rafRef.current);
+    }, [tick]);
+
+    const currentMsg =
+        [...LOADING_STEPS].reverse().find(s => progress >= s.pct)?.text ?? LOADING_STEPS[0].text;
+
+    const R = 52;
+    const circ = 2 * Math.PI * R;
+    const offset = circ - (progress / 100) * circ;
+
+    const activeTag = Object.entries(TAG_THRESHOLDS)
+        .filter(([, t]) => progress >= t)
+        .sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+
+    return (
+        <main className="flex-1 flex flex-col items-center justify-center px-4 py-6 sm:py-10">
+            <div className="w-full max-w-md flex flex-col gap-5">
+                <div className="text-center">
+                    <h2 className="font-display text-white text-xl font-bold mb-1">Consulta de Reembolsos</h2>
+                    <p className="text-zinc-400 text-sm">Cruzando dados em múltiplos canais...</p>
+                </div>
+
+                <div className="rounded-2xl p-5" style={{ backgroundColor: "#0a150e", border: "1px solid #1e3a26" }}>
+                    {CATEGORIES.map(({ icon, label, tags }) => (
+                        <div key={label} className="mb-4">
+                            <p className="text-[9px] font-semibold tracking-[0.15em] text-zinc-500 text-center mb-2 uppercase">
+                                {icon} {label}
+                            </p>
+                            <div className="flex flex-wrap justify-center gap-1.5">
+                                {tags.map(tag => {
+                                    const threshold = TAG_THRESHOLDS[tag] ?? 100;
+                                    const scanned  = progress >= threshold;
+                                    const isActive = tag === activeTag;
+                                    return (
+                                        <span
+                                            key={tag}
+                                            className="px-2.5 py-1 rounded-full text-xs border transition-all duration-500"
+                                            style={
+                                                isActive
+                                                    ? { backgroundColor: "rgba(0,255,102,0.18)", borderColor: "#00FF66", color: "#00FF66", boxShadow: "0 0 8px rgba(0,255,102,0.35)" }
+                                                    : scanned
+                                                    ? { backgroundColor: "rgba(0,255,102,0.07)", borderColor: "rgba(0,255,102,0.3)", color: "#a3e6bc" }
+                                                    : { backgroundColor: "#111d15", borderColor: "#3f3f46", color: "#71717a" }
+                                            }
+                                        >
+                                            {scanned && !isActive && <span className="mr-1 text-[9px]">✓</span>}
+                                            {isActive && <span className="mr-1 inline-block w-1.5 h-1.5 rounded-full bg-[#00FF66] animate-pulse align-middle" />}
+                                            {tag}
+                                        </span>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+
+                    <div className="flex flex-col items-center mt-2">
+                        <div className="relative w-[130px] h-[130px]">
+                            <svg className="w-full h-full" viewBox="0 0 130 130" style={{ transform: "rotate(-90deg)" }}>
+                                <circle cx="65" cy="65" r={R} fill="none" stroke="#1a2e20" strokeWidth="7" />
+                                <circle
+                                    cx="65" cy="65" r={R}
+                                    fill="none" stroke="#00FF66" strokeWidth="7" strokeLinecap="round"
+                                    strokeDasharray={circ} strokeDashoffset={offset}
+                                    style={{ filter: "drop-shadow(0 0 6px rgba(0,255,102,0.6))" }}
+                                />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <span className="text-3xl font-bold text-white font-mono tabular-nums">
+                                    {Math.floor(progress)}%
+                                </span>
+                            </div>
+                        </div>
+                        <p className="mt-3 text-zinc-400 text-xs text-center px-4">{currentMsg}</p>
+                    </div>
+                </div>
+
+                <p className="text-center text-[11px] text-zinc-700">🔒 Análise gratuita · Dados protegidos · SSL</p>
+            </div>
+        </main>
+    );
+}
+
 // ─── results stage ────────────────────────────────────────────────────────────
 
 function ResultsStage({ data, onContinue }) {
@@ -363,12 +493,12 @@ function ResultsStage({ data, onContinue }) {
 // ─── main component ───────────────────────────────────────────────────────────
 
 export default function GatePage({ onComplete }) {
-    const [stage, setStage]     = useState("form"); // "form" | "results"
+    const [stage, setStage]       = useState("form"); // "form" | "loading" | "results"
     const [gateResult, setGateResult] = useState(null);
 
     const handleFormSubmit = (data) => {
         setGateResult(data);
-        setStage("results");
+        setStage("loading");
     };
 
     return (
@@ -377,7 +507,8 @@ export default function GatePage({ onComplete }) {
             style={{ backgroundImage: "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,255,102,0.06) 0%, transparent 100%)" }}
         >
             <GateHeader />
-            {stage === "form" && <FormStage onSubmit={handleFormSubmit} />}
+            {stage === "form"    && <FormStage onSubmit={handleFormSubmit} />}
+            {stage === "loading" && <LoadingStage onComplete={() => setStage("results")} />}
             {stage === "results" && gateResult && (
                 <ResultsStage data={gateResult} onContinue={() => onComplete(gateResult)} />
             )}
