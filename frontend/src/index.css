@@ -1,0 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --rp-bg: #050a08;
+    --rp-surface: #0c1410;
+    --rp-primary: #00ff66;
+    --rp-primary-dim: #00cc52;
+    --rp-text: #ffffff;
+    --rp-text-dim: #a1a1aa;
+    --rp-text-locked: #52525b;
+    --rp-border: rgba(255, 255, 255, 0.08);
+    --rp-border-active: rgba(0, 255, 102, 0.4);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--rp-bg);
+    color: var(--rp-text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+.font-display {
+    font-family: "Outfit", "Inter", sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* shadcn base (kept minimal for accordion etc) */
+@layer base {
+    :root {
+        --background: 150 30% 3%;
+        --foreground: 0 0% 98%;
+        --card: 150 20% 6%;
+        --card-foreground: 0 0% 98%;
+        --popover: 150 20% 6%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 140 100% 50%;
+        --primary-foreground: 0 0% 0%;
+        --secondary: 0 0% 14%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14%;
+        --muted-foreground: 0 0% 65%;
+        --accent: 140 100% 50%;
+        --accent-foreground: 0 0% 0%;
+        --destructive: 0 62% 30%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14%;
+        --input: 0 0% 14%;
+        --ring: 140 100% 50%;
+        --radius: 0.75rem;
+    }
+}
+
+@layer base {
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+/* ===== VSL Animations ===== */
+@keyframes rp-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rp-pulse-glow {
+    0%,
+    100% {
+        box-shadow:
+            0 0 30px rgba(0, 255, 102, 0.45),
+            0 0 60px rgba(0, 255, 102, 0.15);
+    }
+    50% {
+        box-shadow:
+            0 0 50px rgba(0, 255, 102, 0.75),
+            0 0 100px rgba(0, 255, 102, 0.3);
+    }
+}
+
+@keyframes rp-frame-breathe {
+    0%,
+    100% {
+        box-shadow:
+            0 0 60px rgba(0, 255, 102, 0.18),
+            inset 0 0 0 1px rgba(0, 255, 102, 0.35);
+    }
+    50% {
+        box-shadow:
+            0 0 90px rgba(0, 255, 102, 0.32),
+            inset 0 0 0 1px rgba(0, 255, 102, 0.6);
+    }
+}
+
+@keyframes rp-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.rp-fade-in {
+    animation: rp-fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.rp-pulse-glow {
+    animation: rp-pulse-glow 2.4s ease-in-out infinite;
+}
+
+.rp-frame-breathe {
+    animation: rp-frame-breathe 4s ease-in-out infinite;
+}
+
+.rp-shimmer-text {
+    background: linear-gradient(
+        90deg,
+        #52525b 0%,
+        #a1a1aa 50%,
+        #52525b 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rp-shimmer 3s linear infinite;
+}
+
+/* ===== Hero background ===== */
+.rp-hero-bg {
+    background:
+        radial-gradient(
+            ellipse 60% 50% at 50% 0%,
+            rgba(0, 255, 102, 0.12) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse 80% 60% at 50% 100%,
+            rgba(0, 255, 102, 0.05) 0%,
+            transparent 60%
+        ),
+        var(--rp-bg);
+}
+
+.rp-grid-overlay {
+    background-image:
+        linear-gradient(rgba(0, 255, 102, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 102, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 80%);
+}
+
+.rp-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+}
+
+/* ===== Glass surface ===== */
+.rp-glass {
+    background: rgba(12, 20, 16, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--rp-border);
+}
+
+/* ===== Locked button text shimmer ===== */
+.rp-locked-btn {
+    background: linear-gradient(
+        90deg,
+        #18181b 0%,
+        #1f1f23 50%,
+        #18181b 100%
+    );
+    background-size: 200% 100%;
+    animation: rp-shimmer 4s linear infinite;
+}
+
+/* hide native fullscreen button when locked? we keep controls minimal anyway */
+
+/* Custom video styling */
+video::-webkit-media-controls-timeline {
+    pointer-events: none;
+}
+
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display {
+    color: #00ff66;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #050a08;
+}
+::-webkit-scrollbar-thumb {
+    background: #1a2620;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #00ff66;
+}
+
+/* Selection */
+::selection {
+    background: rgba(0, 255, 102, 0.3);
+    color: #ffffff;
+}

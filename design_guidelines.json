@@ -1,0 +1,117 @@
+{
+  "project_name": "RecuperaPix VSL Landing Page",
+  "theme": "dark",
+  "archetype": "Archetype 7 (Electric & Neon) combined with Archetype 4 (Swiss & High-Contrast) for a highly trusted, premium fintech aesthetic.",
+  "design_philosophy": "A million-dollar VSL experience blending high-end cinematic dark mode with intense trust signals. Deep void blacks create a premium cinema-like viewing environment, while neon green acts as a focused kinetic trigger for the singular conversion goal. Uses 'Optical Clarity' glassmorphism for a modern fintech polish.",
+  "colors": {
+    "background": "#050A08",
+    "surface": "#0C1410",
+    "surface_glass": "rgba(12, 20, 16, 0.6)",
+    "primary": "#00FF66",
+    "primary_glow": "rgba(0, 255, 102, 0.3)",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#A1A1AA",
+    "text_locked": "#52525B",
+    "border_subtle": "rgba(255, 255, 255, 0.08)",
+    "border_active": "rgba(0, 255, 102, 0.4)",
+    "locked_button_bg": "#18181B"
+  },
+  "typography": {
+    "heading_font": "Outfit",
+    "body_font": "Inter",
+    "rules": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-none font-medium",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl tracking-tight font-medium",
+      "h3": "text-xl sm:text-2xl font-medium",
+      "body": "text-base sm:text-lg leading-relaxed text-zinc-400",
+      "overline": "text-xs tracking-[0.2em] uppercase text-[#00FF66] font-semibold"
+    }
+  },
+  "spacing_and_layout": {
+    "padding_strategy": "Generous spacing. Use p-8, p-12, or p-16 for section padding to allow breathing room.",
+    "container": "max-w-6xl mx-auto",
+    "grid_system": "Bento Grid Mode B (Control Room Grid) for Trust Stats and Testimonials to evoke an analytics dashboard feel.",
+    "borders": "Rounded borders premium (rounded-2xl to rounded-3xl for main containers). 1px solid subtle borders on all surfaces to prevent visual muddiness."
+  },
+  "components": {
+    "header": {
+      "style": "Crystal Glassmorphism (backdrop-blur-xl bg-[#050A08]/70 border-b border-white/5)",
+      "layout": "Minimalist. Flex between logo (left) and social proof badge (right). Sticky at top z-50.",
+      "testid": "vsl-header"
+    },
+    "hero": {
+      "style": "Dark gradient radial background with noise texture overlay.",
+      "layout": "Centered alignment. Overline -> H1 Headline (High impact) -> Subtitle -> VSL Player -> Dynamic CTA.",
+      "testid": "vsl-hero-section"
+    },
+    "vsl_player": {
+      "style": "Massive central element. Dark surface with 1px border_active and shadow-[0_0_60px_rgba(0,255,102,0.15)].",
+      "features": "Uses local video vsl.mp4. Must have progress tracking logic. Auto-pause on scroll out of view (optional but recommended).",
+      "testid": "vsl-video-player"
+    },
+    "cta_button": {
+      "style_locked": "bg-zinc-900 text-zinc-500 border border-zinc-800 cursor-not-allowed",
+      "style_unlocked": "bg-[#00FF66] text-black font-bold shadow-[0_0_30px_rgba(0,255,102,0.4)] hover:scale-105 hover:bg-[#00e65c] transition-all duration-300",
+      "behavior": "Locked until video reaches 60%. Shows 'ASSISTINDO VÍDEO...' and visual progress indicator while locked. Switches to 'CONSULTAR MEU POSSÍVEL REEMBOLSO' with pulsing glow when unlocked.",
+      "testid": "vsl-main-cta"
+    },
+    "stats_bar": {
+      "style": "Grid cols-1 md:grid-cols-3 gap-6 py-12",
+      "metrics": ["+47 mil usuários", "R$ 12 milhões recuperados", "98% de satisfação"],
+      "layout": "Bento style mini-cards. Use large glowing numbers (text-4xl Outfit) with muted subtitles.",
+      "testid": "vsl-stats-bar"
+    },
+    "testimonials": {
+      "style": "ReclameAqui style, deep dark cards with 1px green border on hover.",
+      "layout": "Masonry or Bento grid. Use avatar, star ratings (5 green stars), and verified purchase badge.",
+      "testid": "vsl-testimonials"
+    },
+    "faq": {
+      "style": "Minimalist accordion (Shadcn customized). Flat background, 1px border-border, active item gets subtle green glow.",
+      "testid": "vsl-faq"
+    }
+  },
+  "motion_and_interactions": {
+    "vsl_frame": "Subtle breathing/pulsing shadow around the video frame using Framer Motion.",
+    "cta_reveal": "When reaching 60%, trigger an attention-grabbing scale punch animation and color crossfade.",
+    "scroll": "Smooth scrolling via lenis (if possible) for premium cinematic feel."
+  },
+  "media_assets": {
+    "logo": {
+      "url": "https://customer-assets.emergentagent.com/job_df9bb8fb-3e32-4ff7-aaf3-f036372a9b66/artifacts/2j3oavsg_logotipo.png",
+      "description": "RecuperaPix logo (Neon green lightning on black)"
+    },
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1768916321598-7869ef2db8e0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NTN8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGRhcmslMjBncmVlbiUyMG5lb24lMjBncmlkfGVufDB8fHx8MTc3ODYxOTc2OHww&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract dark background with subtle green neon lines. Use with low opacity (10-20%) as a texture behind the hero."
+    },
+    "testimonial_avatars": [
+      {
+        "url": "https://images.unsplash.com/photo-1764545973653-94c40d993495?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwyfHxwcm9mZXNzaW9uYWwlMjBhdmF0YXIlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc3ODYxOTc2OHww&ixlib=rb-4.1.0&q=85",
+        "description": "Male avatar for testimonial"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1762291629616-3e2c044c79a0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBhdmF0YXIlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc3ODYxOTc2OHww&ixlib=rb-4.1.0&q=85",
+        "description": "Female avatar for testimonial"
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1764546373114-2d7a87221733?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzF8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBhdmF0YXIlMjBwb3J0cmFpdCUyMGRhcmslMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc3ODYxOTc2OHww&ixlib=rb-4.1.0&q=85",
+        "description": "Older male avatar for testimonial"
+      }
+    ],
+    "vsl_video": {
+      "url": "/vsl.mp4",
+      "description": "Local video file for the VSL player."
+    }
+  },
+  "instructions_to_main_agent": [
+    "Install and use 'Outfit' font for all headings (H1-H4) and 'Inter' only for body text. DO NOT use Inter for headings.",
+    "Implement the VSL player with a standard HTML5 <video> tag, but attach React state to track 'currentTime' vs 'duration'.",
+    "The main CTA button must be disabled and visually locked until the video hits 60% completion. Show a small progress bar or percentage text inside the locked button.",
+    "Once 60% is reached, instantly transform the CTA to the neon green primary color, enable clicking, and add a pulsing animation (framer-motion or tailwind ping).",
+    "Use Lucide-react for UI icons (e.g., Locks, Shields, Checkmarks) matching the premium fintech vibe.",
+    "Apply 'data-testid' to all interactive elements as specified in the guidelines.",
+    "Ensure the hero background image is extremely subtle (opacity-10 to opacity-20) and uses a radial gradient mask to fade into the pure dark background at the edges.",
+    "Construct the stats and testimonials using Bento Grid Mode B (grid-cols-1 md:grid-cols-3) to give it a structured, data-driven feel."
+  ]
+}
